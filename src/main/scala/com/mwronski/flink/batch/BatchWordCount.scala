@@ -1,8 +1,8 @@
-package com.mwronski
+package com.mwronski.flink.batch
 
 import org.apache.flink.api.scala._
 
-object WordCount {
+object BatchWordCount {
   def main(args: Array[String]) {
 
     val env = ExecutionEnvironment.getExecutionEnvironment
