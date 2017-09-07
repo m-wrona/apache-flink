@@ -1,11 +1,11 @@
 resolvers in ThisBuild ++= Seq("Apache Development Snapshot Repository" at "https://repository.apache.org/content/repositories/snapshots/",
   Resolver.mavenLocal)
 
-name := "Flink Project"
+name := "Flink"
 
-version := "0.1-SNAPSHOT"
+version := "0.0.1-SNAPSHOT"
 
-organization := "org.example"
+organization := "com.wronski.flink"
 
 scalaVersion in ThisBuild := "2.11.8"
 
@@ -24,9 +24,9 @@ mainClass in assembly := Some("org.example.Job")
 
 // make run command include the provided dependencies
 run in Compile := Defaults.runTask(fullClasspath in Compile,
-                                   mainClass in (Compile, run),
-                                   runner in (Compile,run)
-                                  ).evaluated
+  mainClass in(Compile, run),
+  runner in(Compile, run)
+).evaluated
 
 // exclude Scala library from assembly
 assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false)
