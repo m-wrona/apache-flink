@@ -5,22 +5,25 @@ name := "Flink"
 
 version := "0.0.1-SNAPSHOT"
 
-organization := "com.wronski.flink"
+organization := "com.mwronski.flink"
 
-scalaVersion in ThisBuild := "2.11.8"
+scalaVersion in ThisBuild := "2.11.11"
 
 val flinkVersion = "1.3.2"
+val flinkKafkaVersion = "0.10"
 
 val flinkDependencies = Seq(
   "org.apache.flink" %% "flink-scala" % flinkVersion % "provided",
-  "org.apache.flink" %% "flink-streaming-scala" % flinkVersion % "provided")
+  "org.apache.flink" %% "flink-streaming-scala" % flinkVersion % "provided",
+  "org.apache.flink" % "flink-connector-kafka-0.10_2.11" % "1.2.0"
+)
 
 lazy val root = (project in file(".")).
   settings(
     libraryDependencies ++= flinkDependencies
   )
 
-mainClass in assembly := Some("org.example.Job")
+mainClass in assembly := Some("com.mwronski.flink.stream.StreamSocketWindowWordCount")
 
 // make run command include the provided dependencies
 run in Compile := Defaults.runTask(fullClasspath in Compile,
