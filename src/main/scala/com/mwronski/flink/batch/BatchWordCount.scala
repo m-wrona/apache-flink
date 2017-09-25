@@ -2,6 +2,9 @@ package com.mwronski.flink.batch
 
 import org.apache.flink.api.scala._
 
+/**
+  * Count words based on given text using batch approach.
+  */
 object BatchWordCount {
   def main(args: Array[String]) {
 

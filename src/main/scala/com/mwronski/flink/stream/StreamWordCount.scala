@@ -3,6 +3,9 @@ package com.mwronski.flink.stream
 import org.apache.flink.api.scala._
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 
+/**
+  * Count words based on given text using streaming approach.
+  */
 object StreamWordCount {
   def main(args: Array[String]) {
 

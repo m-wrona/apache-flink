@@ -21,3 +21,14 @@ nc -l 9000
 # Samples
 
 * StreamSocketWindowWordCount: count number of words from the socket based on time window
+
+
+## Kafka commands
+
+```
+kafka-avro-console-consumer --topic song-feed --bootstrap-server localhost:9092 --from-beginning
+```
+
+```
+kafka-topics --list --zookeeper localhost:32181
+```

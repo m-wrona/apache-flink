@@ -4,6 +4,12 @@ import org.apache.flink.api.scala._
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.windowing.time.Time
 
+/**
+  * Sample counts words coming from socket.
+  *
+  * In order to create socket server first run in your shell
+  * $nc -l 9000
+  */
 object StreamSocketWindowWordCount {
   def main(args: Array[String]) {
 
