@@ -8,6 +8,8 @@ Repo for learning about Apache Flink
 sbt run
 ```
 
+## Sockets
+
 You can run socket-based samples as following:
 
 1) Open socket
@@ -18,12 +20,15 @@ nc -l 9000
 
 2) Start job
 
-# Samples
+## Kafka
 
-* StreamSocketWindowWordCount: count number of words from the socket based on time window
+You can run Kafka-based samples as following:
 
+```
+docker-compose up
+```
 
-## Kafka commands
+Other commands:
 
 ```
 kafka-avro-console-consumer --topic song-feed --bootstrap-server localhost:9092 --from-beginning
