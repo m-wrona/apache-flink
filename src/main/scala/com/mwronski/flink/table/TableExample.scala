@@ -49,14 +49,17 @@ object TableExample {
     )
     songsConsumer.setStartFromEarliest()
 
-    tEnv.registerDataStream("Songs", env.addSource(songsConsumer))
-    tEnv.registerDataStream("PLayEvents", env.addSource(playEventsConsumer))
+    //    tEnv.registerDataStream("Songs", env.addSource(songsConsumer))
+    //    tEnv.registerDataStream("PLayEvents", env.addSource(playEventsConsumer))
 
     val tSongs = tEnv.fromDataStream(env.addSource(songsConsumer))
     val tPlayEvents = tEnv.fromDataStream(env.addSource(playEventsConsumer))
 
-    tSongs
-      .select("*")
+    tEnv.toAppendStream[PlayEvent](
+      tPlayEvents
+        .select("*")
+    )
+      .print()
 
     env.execute("Table Example")
   }
