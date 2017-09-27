@@ -45,7 +45,7 @@ object Kafka010Example {
     env.getConfig.setRestartStrategy(RestartStrategies.fixedDelayRestart(4, 10000))
     env.enableCheckpointing(5000)
     env.getConfig.setGlobalJobParameters(params)
-    env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
+    env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime)
 
     val playEventsConsumer = new FlinkKafkaConsumer010[PlayEvent](
       params.get("topic-play-events"),
@@ -71,21 +71,13 @@ object Kafka010Example {
 
     env
       .addSource(playEventsConsumer)
-      .rebalance
-      .join(env.addSource(songsConsumer)
-          .map(s => {
-            println(s"============= $s")
-            s
-          })
-
-      )
+      .join(env.addSource(songsConsumer))
       .where(_.getSongId)
       .equalTo(_.getId)
       .window(TumblingEventTimeWindows.of(Time.seconds(5)))
       .apply((e, s) => (e.getSongId, s.getName, e.getDuration))
-//      .keyBy(0)
-      //      .timeWindow(Time.seconds(5))
-//      .sum(2)
+      .keyBy(0)
+      .sum(2)
       .print()
 
     env.execute("Kafka Example")
