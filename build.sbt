@@ -15,6 +15,7 @@ val flinkKafkaVersion = "0.10"
 val flinkDependencies = Seq(
   "org.apache.flink" %% "flink-scala" % flinkVersion % "provided",
   "org.apache.flink" %% "flink-streaming-scala" % flinkVersion % "provided",
+  "org.apache.flink" %% "flink-table" % flinkVersion % "provided",
   "org.apache.flink" % "flink-connector-kafka-0.10_2.11" % "1.2.0",
   "io.confluent" % "kafka-streams-avro-serde" % "3.3.0"
 )
