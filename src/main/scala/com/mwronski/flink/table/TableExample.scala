@@ -1,10 +1,10 @@
-package com.mwronski.flink.stream
+package com.mwronski.flink.table
 
-import java.util.{Collections}
+import java.util.Collections
 
 import io.confluent.examples.streams.avro.{PlayEvent, Song}
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig
-import io.confluent.kafka.streams.serdes.avro.{SpecificAvroDeserializer}
+import io.confluent.kafka.streams.serdes.avro.SpecificAvroDeserializer
 import org.apache.flink.api.common.restartstrategy.RestartStrategies
 import org.apache.flink.api.common.typeinfo.TypeInformation
 import org.apache.flink.api.java.typeutils.TypeExtractor
@@ -13,18 +13,19 @@ import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows
 import org.apache.flink.streaming.api.windowing.time.Time
-import org.apache.flink.streaming.connectors.kafka.{FlinkKafkaConsumer010}
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010
 import org.apache.flink.streaming.util.serialization.DeserializationSchema
 import org.apache.flink.table.api.TableEnvironment
+import org.apache.flink.table.api.java.Tumble
+import org.apache.flink.table.plan.logical.TumblingGroupWindow
 
 /**
   * Sample reads music data generate by confluent sample and summarizes time of played songs.
-  * Output is generated for some short time only since song stream (topic songs) is short & limited.
   *
   * Run before in your shell in order to create Kafka locally and produce sample content:
   * $docker-compose up
   */
-object Kafka010Example {
+object TableExample {
 
   def main(args: Array[String]): Unit = {
 
@@ -58,20 +59,16 @@ object Kafka010Example {
     )
     songsConsumer.setStartFromEarliest()
 
+    tEnv.registerDataStream("Songs", env.addSource(songsConsumer))
+    tEnv.registerDataStream("PLayEvents", env.addSource(playEventsConsumer))
+
     val tSongs = tEnv.fromDataStream(env.addSource(songsConsumer))
+    val tPlayEvents = tEnv.fromDataStream(env.addSource(playEventsConsumer))
 
-    env
-      .addSource(playEventsConsumer)
-      .join(env.addSource(songsConsumer))
-      .where(_.getSongId)
-      .equalTo(_.getId)
-      .window(TumblingEventTimeWindows.of(Time.seconds(5)))
-      .apply((e, s) => (e.getSongId, s.getName, e.getDuration))
-      .keyBy(0)
-      .sum(2)
-      .print()
+    tSongs
+      .select("*")
 
-    env.execute("Kafka Example")
+    env.execute("Table Example")
   }
 
 
