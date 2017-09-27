@@ -57,7 +57,6 @@ object Kafka010Example {
       params.get("topic-songs"),
       new PlayEventDeserializationSchema(classOf[Song], params.get("schema-registry"), params.get("topic-songs")),
       params.getProperties
-
     )
     songsConsumer.setStartFromEarliest()
 
