@@ -32,7 +32,7 @@ object Kafka010Example {
 
     val params = ParameterTool.fromArgs(Array(
       "--topic-play-events", "play-events",
-      "--topic-songs", "songs",
+      "--topic-songs", "song-feed",
       "--bootstrap.servers", "localhost:9092",
       "--zookeeper.connect", "localhost:32181",
       "--schema-registry", "http://localhost:8081"
