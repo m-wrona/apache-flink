@@ -52,9 +52,6 @@ object Kafka010Example {
       new PlayEventDeserializationSchema(classOf[PlayEvent], params.get("schema-registry"), params.get("topic-play-events")),
       params.getProperties
     )
-    playEventsConsumer.assignTimestampsAndWatermarks(new AscendingTimestampExtractor[PlayEvent] {
-      def extractAscendingTimestamp(element: PlayEvent): Long = new Date().getTime
-    })
 
     val songsConsumer = new FlinkKafkaConsumer010[Song](
       params.get("topic-songs"),
@@ -63,9 +60,6 @@ object Kafka010Example {
 
     )
     songsConsumer.setStartFromEarliest()
-    songsConsumer.assignTimestampsAndWatermarks(new AscendingTimestampExtractor[Song] {
-      def extractAscendingTimestamp(element: Song): Long = new Date().getTime
-    })
 
     val tSongs = tEnv.fromDataStream(env.addSource(songsConsumer))
 
