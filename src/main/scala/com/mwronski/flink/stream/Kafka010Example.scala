@@ -60,7 +60,9 @@ object Kafka010Example {
       params.get("topic-songs"),
       new PlayEventDeserializationSchema(classOf[Song], params.get("schema-registry"), params.get("topic-songs")),
       params.getProperties
+
     )
+    songsConsumer.setStartFromEarliest()
     songsConsumer.assignTimestampsAndWatermarks(new AscendingTimestampExtractor[Song] {
       def extractAscendingTimestamp(element: Song): Long = new Date().getTime
     })
@@ -70,7 +72,13 @@ object Kafka010Example {
     env
       .addSource(playEventsConsumer)
       .rebalance
-      .join(env.addSource(songsConsumer))
+      .join(env.addSource(songsConsumer)
+          .map(s => {
+            println(s"============= $s")
+            s
+          })
+
+      )
       .where(_.getSongId)
       .equalTo(_.getId)
       .window(TumblingEventTimeWindows.of(Time.seconds(5)))
