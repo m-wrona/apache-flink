@@ -1,6 +1,6 @@
 package com.mwronski.flink.table
 
-import com.mwronski.flink.avro.KafkaDeserializationSchema
+import com.mwronski.flink.kafka.KafkaDeserializationSchema
 import io.confluent.examples.streams.avro.{PlayEvent, Song}
 import org.apache.flink.api.common.restartstrategy.RestartStrategies
 import org.apache.flink.api.java.utils.ParameterTool
@@ -49,20 +49,20 @@ object TableExample {
     )
     songsConsumer.setStartFromEarliest()
 
-    //    tEnv.registerDataStream("Songs", env.addSource(songsConsumer))
-    //    tEnv.registerDataStream("PLayEvents", env.addSource(playEventsConsumer))
-
     val tSongs = tEnv.fromDataStream(env.addSource(songsConsumer))
     val tPlayEvents = tEnv.fromDataStream(env.addSource(playEventsConsumer))
 
-    tEnv.toAppendStream[PlayEvent](
+    tEnv.toRetractStream[Tuple2[Long, Long]](
       tPlayEvents
-        .select("*")
+        .groupBy("song_id")
+        .select("song_id, sum(duration) as playTime")
     )
       .print()
 
     env.execute("Table Example")
   }
+
+  class SongPlayInfo(var song_id: Long, var duration: Long)
 
 }
 

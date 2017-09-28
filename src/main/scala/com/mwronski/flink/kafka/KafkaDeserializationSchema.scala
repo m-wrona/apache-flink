@@ -1,4 +1,4 @@
-package com.mwronski.flink.avro
+package com.mwronski.flink.kafka
 
 import java.util.Collections
 

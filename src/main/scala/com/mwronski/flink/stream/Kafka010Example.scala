@@ -1,6 +1,6 @@
 package com.mwronski.flink.stream
 
-import com.mwronski.flink.avro.KafkaDeserializationSchema
+import com.mwronski.flink.kafka.KafkaDeserializationSchema
 import io.confluent.examples.streams.avro.{PlayEvent, Song}
 import org.apache.flink.api.common.restartstrategy.RestartStrategies
 import org.apache.flink.api.java.utils.ParameterTool
