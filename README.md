@@ -145,3 +145,4 @@ b) run jar using [CLI](https://ci.apache.org/projects/flink/flink-docs-release-1
 
 * [Rest API](https://ci.apache.org/projects/flink/flink-docs-release-1.3/monitoring/rest_api.html)
 
+* [Production ready checklist](https://ci.apache.org/projects/flink/flink-docs-release-1.3/ops/production_ready.html)
