@@ -20,6 +20,10 @@ kubectl apply -f devops
 
 There is only one instance of job-manager since it's assumed that k8s will restart it automatically.
 
+However after restart of job-manager info about jobs is lot and must be restored manually.
+
+So if failure recovery should be supported for job-manager then cluster of job-managers must be created using `Zookeeper`.
+
 Task managers can be auto-scaled and will be managed by job-manager.
 
 More details can be found in [presentation](https://www.slideshare.net/dataArtisans/apache-flink-training-deployment-operations).
